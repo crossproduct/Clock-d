@@ -130,13 +130,13 @@ function getSunriseSunset() {
 	$.ajax({
         type: "GET",
         url: url,
-        dataType: "jsonp",
+        dataType: "json",
         success: parseJSON
       });
 
-    function parseJSON(jsonp)
+    function parseJSON(json)
     {
-      console.log(jsonp)
+      console.log(json);
     }
 }
 // TODO: Implement buffered canvas for offscreen drawing
