@@ -4,6 +4,8 @@ var d;
 var MAX_SECOND_RADIUS = 100;
 var MAX_MINUTE_RADIUS = 10;
 var MAX_HOUR_RADIUS = 50;
+var SUNRISE = "6:23";
+var SUNSET = "8:23";
 
 window.onresize = function(event) {
 	$('#clock_canvas')[0].width = window.innerWidth;
@@ -11,9 +13,6 @@ window.onresize = function(event) {
 }
 
 function init() {
-	// detect screen size on mobile
-	//alert('w: '+screen.width+' h: '+screen.height);
-
 	// get the canvas context
 	ctx = $('#clock_canvas')[0].getContext("2d");
 	$('#clock_canvas')[0].width = window.innerWidth;
@@ -34,6 +33,8 @@ function draw() {
 	drawSeconds();
 	drawMinutes();
 	drawHours();
+	drawSecondsAnnotation();
+	updateBackground();
 }
 
 
@@ -74,17 +75,26 @@ function drawMinutes() {
 	var min = d.getMinutes();
 	for(var i=1; i<=min; i++) {
 		drawCircle(window.innerWidth/2+Math.sin(i*Math.PI/30)*(2*MAX_SECOND_RADIUS+3*MAX_MINUTE_RADIUS), window.innerHeight/2-Math.cos(i*Math.PI/30)*(2*MAX_SECOND_RADIUS+3*MAX_MINUTE_RADIUS),(4*(1000-d.getMilliseconds())/1000)+MAX_MINUTE_RADIUS,"rgba(23,193,190,0.8)", true, false); //#17C1BE
+		//drawBlurCircle(window.innerWidth/2+Math.sin(i*Math.PI/30)*(2*MAX_SECOND_RADIUS+3*MAX_MINUTE_RADIUS), window.innerHeight/2-Math.cos(i*Math.PI/30)*(2*MAX_SECOND_RADIUS+3*MAX_MINUTE_RADIUS),(4*(1000-d.getMilliseconds())/1000)+MAX_MINUTE_RADIUS,"rgba(23,193,190,1)","rgba(23,193,190,0)", true, false); //#17C1BE
 	}
 }
 
 function drawHours() {
-	var min = d.getHours()%12;	// 12-hr clock
-	for(var i=1; i<=min; i++) {
-		drawCircle(window.innerWidth/2+Math.sin(i*Math.PI/6)*(2*MAX_SECOND_RADIUS+3*MAX_MINUTE_RADIUS+2*MAX_HOUR_RADIUS), window.innerHeight/2-Math.cos(i*Math.PI/6)*(2*MAX_SECOND_RADIUS+3*MAX_MINUTE_RADIUS+2*MAX_HOUR_RADIUS),(10*(1000-d.getMilliseconds())/1000)+MAX_HOUR_RADIUS,"rgba(230,219,116,1)", true, false); // #E6DB74
+	var hours = d.getHours()%12;	// 12-hr clock
+	for(var i=1; i<=hours; i++) {
+		var alpha = 1; //1.2 - (hours - i)/10;
+		drawCircle(window.innerWidth/2+Math.sin(i*Math.PI/6)*(2*MAX_SECOND_RADIUS+3*MAX_MINUTE_RADIUS+2*MAX_HOUR_RADIUS), window.innerHeight/2-Math.cos(i*Math.PI/6)*(2*MAX_SECOND_RADIUS+3*MAX_MINUTE_RADIUS+2*MAX_HOUR_RADIUS),(10*(1000-d.getMilliseconds())/1000)+MAX_HOUR_RADIUS,"rgba(230,219,116,"+alpha+")", true, false); // #E6DB74
 		//drawBlurCircle(window.innerWidth/2+Math.sin(i*Math.PI/6)*(2*MAX_SECOND_RADIUS+3*MAX_MINUTE_RADIUS+2*MAX_HOUR_RADIUS), window.innerHeight/2-Math.cos(i*Math.PI/6)*(2*MAX_SECOND_RADIUS+3*MAX_MINUTE_RADIUS+2*MAX_HOUR_RADIUS),(10*(1000-d.getMilliseconds())/1000)+MAX_HOUR_RADIUS,"rgba(230,219,116,1)","rgba(230,219,116,0)", true, false); // #E6DB74
 	}
 
 }
 
+function drawSecondsAnnotation() {
+
+}
+
+function updateBackground() {
+
+}
 // TODO: Implement buffered canvas for offscreen drawing
 // TODO: adjust the linear proportionality of the growth, i.e. pulse at 20% vs 20 flat
