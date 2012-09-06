@@ -127,6 +127,10 @@ function getSunriseSunset() {
 	// weather bug ex: http://i.wxbug.net/REST/Direct/GetObs.ashx?la=40.7128858&lo=-74.00833519999999&&ic=1&api_key=jwp2wjpfnuku7u64csy5x827
 
 	var url = 'http://i.wxbug.net/REST/Direct/GetObs.ashx?la='+LAT+'&lo='+LONG+'&&ic=1&api_key=jwp2wjpfnuku7u64csy5x827';
+	$.getJSON(url, function(data) {
+		alert(data);
+	});
+
 	$.ajax({
         type: "GET",
         url: url,
