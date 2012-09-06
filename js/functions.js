@@ -13,7 +13,6 @@ var LONG = "-74.00639";	// default NYC
 window.onresize = function(event) {
 	$('#clock_canvas')[0].width = window.innerWidth;
 	$('#clock_canvas')[0].height = window.innerHeight;
-	document.getElementById('canvas_container').requestFullScreen();
 }
 
 function init() {
@@ -129,6 +128,7 @@ function getSunriseSunset() {
 	$.ajax({
         type: "GET",
         url: url,
+        crossDomain: true,
         dataType: "xml",
         success: parseXml
       });
