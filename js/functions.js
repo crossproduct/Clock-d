@@ -125,7 +125,9 @@ function updateBackground() {
 function getSunriseSunset() {
 	console.log(-1*d.getTimezoneOffset()/60);
 	// example: http://www.earthtools.org/sun/40.71417/-74.00639/4/12/-5/0 --- http://www.earthtools.org/sun/LAT/LONG/DAY/MONTH/GMTOFFSET/0
-	var url = 'http://www.earthtools.org/sun/'+LAT+'/'+LONG+'/'+d.getDate()+'/'+(d.getMonth()+1)+'/'+(-1*d.getTimezoneOffset()/60)+'/0'
+	// weather bug ex: http://i.wxbug.net/REST/Direct/GetObs.ashx?la=40.7128858&lo=-74.00833519999999&&ic=1&api_key=jwp2wjpfnuku7u64csy5x827
+
+	var url = 'http://i.wxbug.net/REST/Direct/GetObs.ashx?la='+LAT+'&lo='+LONG+'&&ic=1&api_key=jwp2wjpfnuku7u64csy5x827';
 	$.ajax({
         type: "GET",
         url: url,
