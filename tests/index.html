@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>QUnit | Clock'd Unit Tests</title>
+ 
+    <link rel="stylesheet" href="../css/qunit.css" />
+    <script src="../js/qunit.js"></script>
+    <script src="../js/functions.js"></script>
+ 
+    <script>
+    test("clockd basics", function() {
+        var now = "2008/01/28 22:25:00";
+        equal( drawCircle(now, "2008/01/28 22:24:30"), "just now" );
+    });
+    </script>
+</head>
+<body>
+    <div id="qunit"></div>
+    <div id="canvas_container" align="center"><canvas id="clock_canvas"/></div>
+</body>
+</html>

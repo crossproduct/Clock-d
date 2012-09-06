@@ -1,9 +1,11 @@
+/*
+#F4F4C9 : Day; 
+#121212 : Night;
+*/
+
 body {
-	background-color: #121212;
+	background-color: #FEFED4;
     margin: 0px;
     padding: 0px;
     overflow: hidden; 
-}
-
-canvas {
 }
