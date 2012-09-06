@@ -131,7 +131,7 @@ function getSunriseSunset() {
 	$.ajax({
         type: "GET",
         url: url,
-        dataType: "xml",
+        dataType: "jsonp",
         success: parseXml
       });
 
