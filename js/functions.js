@@ -1,6 +1,7 @@
 // some globals
 var ctx;
 var d;
+var weather;
 var MAX_SECOND_RADIUS = 100;
 var MAX_MINUTE_RADIUS = 10;
 var MAX_HOUR_RADIUS = 50;
@@ -17,6 +18,9 @@ window.onresize = function(event) {
 }
 
 function init() {
+	// set handlers
+	setHandlers();
+
 	// resolve the time
 	d = new Date();
 
@@ -29,7 +33,7 @@ function init() {
 	}
 
 	// calculate our sunrise and sunset objects
-	getSunriseSunset();
+	getWeather();
 
 	// get the canvas context
 	ctx = $('#clock_canvas')[0].getContext("2d");
@@ -60,6 +64,14 @@ function draw() {
 	updateBackground();
 
 	return d;
+}
+
+function setHandlers() {
+
+}
+
+function onMouseMove() {
+	console.log("mousemove");
 }
 
 
@@ -122,22 +134,12 @@ function updateBackground() {
 
 }
 
-function getSunriseSunset() {
-	// example: http://www.earthtools.org/sun/40.71417/-74.00639/4/12/-5/0 --- http://www.earthtools.org/sun/LAT/LONG/DAY/MONTH/GMTOFFSET/0
-	// weather bug ex: http://i.wxbug.net/REST/Direct/GetObs.ashx?la=40.7128858&lo=-74.00833519999999&&ic=1&api_key=jwp2wjpfnuku7u64csy5x827
-
+function getWeather() {
 	var url = 'http://i.wxbug.net/REST/Direct/GetObs.ashx?la='+LAT+'&lo='+LONG+'&&ic=1&api_key=jwp2wjpfnuku7u64csy5x827';
-	$.ajax({
-        type: "GET",
-        url: url,
-        dataType: "jsonp",
-        success: parseJSON
-      });
-
-    function parseJSON(jsonp)
-    {
-      console.log(jsonp)
-    }
+	$.getJSON('http://www.crossproduct.org/serviceProxies/weather.php?callback=?',{LAT:LAT,LONG:LONG},function(data){
+    	weather = data;
+    	console.log(data);
+	});
 }
 // TODO: Implement buffered canvas for offscreen drawing
 // TODO: adjust the linear proportionality of the growth, i.e. pulse at 20% vs 20 flat
