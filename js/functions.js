@@ -37,7 +37,7 @@ function init() {
 	}
 
 	// calculate our sunrise and sunset objects
-	//getWeather();
+	getWeather();
 
 	// get the canvas context
 	ctx = $('#clock_canvas')[0].getContext("2d");
