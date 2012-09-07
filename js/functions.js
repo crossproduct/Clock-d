@@ -6,7 +6,7 @@ var MAX_SECOND_RADIUS = 100;
 var MAX_MINUTE_RADIUS = 10;
 var MAX_HOUR_RADIUS = 50;
 var SUNRISE = "6:23";
-var SUNSET = "5:47";//"8:23";
+var SUNSET = "8:23";
 var isStaleSun = true;
 var LAT = "40.71417";	// default NYC
 var LONG = "-74.00639";	// default NYC
@@ -37,7 +37,7 @@ function init() {
 	}
 
 	// calculate our sunrise and sunset objects
-	//getWeather();
+	getWeather();
 
 	// get the canvas context
 	ctx = $('#clock_canvas')[0].getContext("2d");
