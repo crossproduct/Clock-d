@@ -12,8 +12,8 @@ var weather;
 var MAX_SECOND_RADIUS = 100;
 var MAX_MINUTE_RADIUS = 10;
 var MAX_HOUR_RADIUS = 50;
-var SUNRISE = "6:23";
-var SUNSET = "8:23";
+var SUNRISE = "6:23";	// default NYC
+var SUNSET = "8:23";	// default NYC
 var isStaleWeather = true;
 var LAT = "40.71417";	// default NYC
 var LONG = "-74.00639";	// default NYC
@@ -44,11 +44,7 @@ function init() {
 
 	// attempt gps
 	navigator.geolocation.getCurrentPosition(GetLocation);
-	function GetLocation(location) {
-	    LAT = location.coords.latitude;
-	    LONG = location.coords.longitude;
-	    console.log('('+LAT+','+LONG+')');
-	}
+	
 
 	// calculate our sunrise and sunset objects
 	getWeather();
@@ -98,6 +94,12 @@ function revealInfomatics() {
 
 
 // THA UNICORN MEAT //
+function GetLocation(location) {
+    LAT = location.coords.latitude;
+    LONG = location.coords.longitude;
+    console.log('('+LAT+','+LONG+')');
+}
+
 // draw a circle given the params
 function drawCircle(x,y,r,color,fill,stroke) {
 
@@ -220,6 +222,7 @@ function getWeather() {
     	$('#temperatureLow_text').html(weather.data.temperatureLow+'&deg;');
     	$('#humidity_text').html(weather.data.humidity);
     	$('#humidityUnits_text').html(weather.data.humidityUnits);
+    	$('#temperature_label').html('<b>'+weather.data.desc+'</b>');
 
 		revealInfomatics();
 	});

@@ -22,9 +22,15 @@
     test("Testing weather service:", function() {
         ok( weather != null, "Weather service is up and responding returning non null weather object" );
         getWeather();
-        notStrictEqual(tSUNRISE, SUNRISE, "SUNRISE information retrieved successfully from returned data");
-        notStrictEqual(tSUNSET, SUNSET, "SUNSET information retrieved successfully from returned data");
+        setTimeout(ajaxTest, 2000);
     });
+
+    function ajaxTest() {
+        test("Testing weather service returned data:", function() {
+            notStrictEqual(tSUNRISE, SUNRISE, "SUNRISE information retrieved successfully from returned data within 2s");
+            notStrictEqual(tSUNSET, SUNSET, "SUNSET information retrieved successfully from returned data within 2s");
+        });
+    }
     </script>
 </head>
 <body>

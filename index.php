@@ -14,7 +14,7 @@
 	<div id="canvas_container" align="center"><canvas id="clock_canvas"/></div>
 	<div id="infomatics">
 		<div id="temperatureInfo">
-			<span id="temperature_label"><b></b></span><br/>
+			<span id="temperature_label"></span><br/>
 			<span id="temperatureHigh_text">0&deg;</span><span style="font-size:16px">High</span><br/>
 			<span id="temperatureCurrent_text">0&deg;</span><span style="font-size:25px">Current</span><br/>
 			<span id="temperatureLow_text">0&deg;</span><span style="font-size:16px">Low</span>
