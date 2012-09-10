@@ -1,3 +1,10 @@
+/**
+ * Author; Chris Ross
+ * crossproduct iNc.
+ *
+ * A minimal but beautiful, soothing rhythmic clock with daily weather updates. 
+ */
+
 // some globals
 var ctx;
 var d;
@@ -7,12 +14,12 @@ var MAX_MINUTE_RADIUS = 10;
 var MAX_HOUR_RADIUS = 50;
 var SUNRISE = "6:23";
 var SUNSET = "8:23";
-var isStaleSun = true;
+var isStaleWeather = true;
 var LAT = "40.71417";	// default NYC
 var LONG = "-74.00639";	// default NYC
 var bgIsAnimating = false;
 
-// minified color plugin since there are bugs in animating backgroundColor css prop
+// minified jquery color plugin since there are bugs in animating backgroundColor css prop
 (function(d){d.each(["backgroundColor","borderBottomColor","borderLeftColor","borderRightColor","borderTopColor","color","outlineColor"],function(f,e){d.fx.step[e]=function(g){if(!g.colorInit){g.start=c(g.elem,e);g.end=b(g.end);g.colorInit=true}g.elem.style[e]="rgb("+[Math.max(Math.min(parseInt((g.pos*(g.end[0]-g.start[0]))+g.start[0]),255),0),Math.max(Math.min(parseInt((g.pos*(g.end[1]-g.start[1]))+g.start[1]),255),0),Math.max(Math.min(parseInt((g.pos*(g.end[2]-g.start[2]))+g.start[2]),255),0)].join(",")+")"}});function b(f){var e;if(f&&f.constructor==Array&&f.length==3){return f}if(e=/rgb\(\s*([0-9]{1,3})\s*,\s*([0-9]{1,3})\s*,\s*([0-9]{1,3})\s*\)/.exec(f)){return[parseInt(e[1]),parseInt(e[2]),parseInt(e[3])]}if(e=/rgb\(\s*([0-9]+(?:\.[0-9]+)?)\%\s*,\s*([0-9]+(?:\.[0-9]+)?)\%\s*,\s*([0-9]+(?:\.[0-9]+)?)\%\s*\)/.exec(f)){return[parseFloat(e[1])*2.55,parseFloat(e[2])*2.55,parseFloat(e[3])*2.55]}if(e=/#([a-fA-F0-9]{2})([a-fA-F0-9]{2})([a-fA-F0-9]{2})/.exec(f)){return[parseInt(e[1],16),parseInt(e[2],16),parseInt(e[3],16)]}if(e=/#([a-fA-F0-9])([a-fA-F0-9])([a-fA-F0-9])/.exec(f)){return[parseInt(e[1]+e[1],16),parseInt(e[2]+e[2],16),parseInt(e[3]+e[3],16)]}if(e=/rgba\(0, 0, 0, 0\)/.exec(f)){return a.transparent}return a[d.trim(f).toLowerCase()]}function c(g,e){var f;do{f=d.curCSS(g,e);if(f!=""&&f!="transparent"||d.nodeName(g,"body")){break}e="backgroundColor"}while(g=g.parentNode);return b(f)}var a={aqua:[0,255,255],azure:[240,255,255],beige:[245,245,220],black:[0,0,0],blue:[0,0,255],brown:[165,42,42],cyan:[0,255,255],darkblue:[0,0,139],darkcyan:[0,139,139],darkgrey:[169,169,169],darkgreen:[0,100,0],darkkhaki:[189,183,107],darkmagenta:[139,0,139],darkolivegreen:[85,107,47],darkorange:[255,140,0],darkorchid:[153,50,204],darkred:[139,0,0],darksalmon:[233,150,122],darkviolet:[148,0,211],fuchsia:[255,0,255],gold:[255,215,0],green:[0,128,0],indigo:[75,0,130],khaki:[240,230,140],lightblue:[173,216,230],lightcyan:[224,255,255],lightgreen:[144,238,144],lightgrey:[211,211,211],lightpink:[255,182,193],lightyellow:[255,255,224],lime:[0,255,0],magenta:[255,0,255],maroon:[128,0,0],navy:[0,0,128],olive:[128,128,0],orange:[255,165,0],pink:[255,192,203],purple:[128,0,128],violet:[128,0,128],red:[255,0,0],silver:[192,192,192],white:[255,255,255],yellow:[255,255,0],transparent:[255,255,255]}})(jQuery);
 
 window.onresize = function(event) {
@@ -23,6 +30,7 @@ window.onresize = function(event) {
 	console.log(''+window.innerWidth+' '+window.innerHeight);
 }
 
+// application initialization
 function init() {
 	// set default data
 	$('#sunrise_text').html(SUNRISE);
@@ -52,6 +60,7 @@ function init() {
 	return setInterval(draw, 10); // approximately 60 fps
 }
 
+// boot
 $(document).ready(function() {
     init();
 });
@@ -61,11 +70,11 @@ function draw() {
 	
 	// resolve the time
 	d = new Date();
-	if(d.getHours == 0 && isStaleSun == true) {
-		// request the days sunrise and sunset. set a semaphore so we only do this once
-		isStaleSun = false;
-	}
-	if(d.getHours > 0) isStaleSun = true;
+	if(d.getMinutes() == 0 && isStaleWeather == true) {
+		// request the days sunrise and sunset. set a semaphore so we only do this once every hour
+		isStaleWeather = false;
+		getWeather();
+	}else if(d.getMinutes() != 0) isStaleWeather = true;
 	
 	drawSeconds();
 	drawMinutes();
@@ -104,6 +113,7 @@ function drawCircle(x,y,r,color,fill,stroke) {
 	}
 }
 
+// draws a blurred style circle
 function drawBlurCircle(x,y,r,color0,color1,fill,stroke) {
 	var radgrad = ctx.createRadialGradient(x,y,r-r/4,x,y,r);
   	radgrad.addColorStop(0, color0);
@@ -113,6 +123,7 @@ function drawBlurCircle(x,y,r,color0,color1,fill,stroke) {
   	ctx.fillRect(0,0,window.innerWidth,window.innerHeight);
 }
 
+// draw the layout for seconds
 function drawSeconds() {
 	drawCircle(window.innerWidth/2, window.innerHeight/2,(20*(1000-d.getMilliseconds())/1000)+((MAX_SECOND_RADIUS*d.getSeconds())/60),"rgba(227,0,83,1)", true, false); //#E30053
 	//drawBlurCircle(window.innerWidth/2, window.innerHeight/2,(20*(1000-d.getMilliseconds())/1000)+((MAX_SECOND_RADIUS*d.getSeconds())/60),"rgba(227,0,83,1)", "rgba(227,0,83,0)", true, false); //#E30053
@@ -121,6 +132,7 @@ function drawSeconds() {
 	drawCircle(window.innerWidth/2, window.innerHeight/2,(20*(1000-d.getMilliseconds())/1000)+MAX_SECOND_RADIUS,"rgba(227,0,83,1)", false, true); //#E30053
 }
 
+// draw the layout for minutes
 function drawMinutes() {
 	var min = d.getMinutes();
 	for(var i=1; i<=min; i++) {
@@ -129,6 +141,7 @@ function drawMinutes() {
 	}
 }
 
+// draw the layout for hours
 function drawHours() {
 	var hours = d.getHours()%12;	// 12-hr clock
 	for(var i=1; i<=hours; i++) {
@@ -139,10 +152,12 @@ function drawHours() {
 
 }
 
+// draw the annotions on the second layout
 function drawSecondsAnnotation() {
 
 }
 
+// updates background-color based on day as well as the sunrise and sunset animation
 function updateBackground() {
 	// check if we are at sunrise/sunset time and animate bg across 5 minutes
 	var currTime = (d.getHours() < 12 ? d.getHours() : d.getHours()-12 )+':'+(d.getMinutes() < 10 ? ('0'+d.getMinutes()) : d.getMinutes());
@@ -185,8 +200,8 @@ function updateBackground() {
 	}
 }
 
+// retrieve the weater object for the given location
 function getWeather() {
-	var url = 'http://i.wxbug.net/REST/Direct/GetObs.ashx?la='+LAT+'&lo='+LONG+'&&ic=1&api_key=jwp2wjpfnuku7u64csy5x827';
 	$.getJSON('http://www.crossproduct.org/serviceProxies/weather.php?callback=?',{LAT:LAT,LONG:LONG},function(data){
     	console.log(data);
     	weather = data;
@@ -198,9 +213,17 @@ function getWeather() {
 
     	$('#sunrise_text').html(SUNRISE);
     	$('#sunset_text').html(SUNSET);
+    	$('#temperatureHigh_text').html(weather.data.temperatureHigh+'&deg;');
+    	$('#temperatureCurrent_text').html(weather.data.temperature+'&deg;');
+    	$('#temperatureLow_text').html(weather.data.temperatureLow+'&deg;');
+    	$('#humidity_text').html(weather.data.humidity);
+    	$('#humidityUnits_text').html(weather.data.humidityUnits);
+
+		revealInfomatics();
 
     	console.log(SUNRISE+'am '+SUNSET+'pm');
 	});
 }
 // TODO: Implement buffered canvas for offscreen drawing
 // TODO: adjust the linear proportionality of the growth, i.e. pulse at 20% vs 20 flat
+// TODO: normalize sizes so that UI is liquid-scaling. (do after design/layout is more solidified)
