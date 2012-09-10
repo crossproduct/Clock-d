@@ -98,6 +98,7 @@ function revealInfomatics() {
 
 
 // THA UNICORN MEAT //
+// draw a circle given the params
 function drawCircle(x,y,r,color,fill,stroke) {
 
 	ctx.fillStyle = color;
@@ -113,7 +114,7 @@ function drawCircle(x,y,r,color,fill,stroke) {
 	}
 }
 
-// draws a blurred style circle
+// draws a blurred style circle given the params
 function drawBlurCircle(x,y,r,color0,color1,fill,stroke) {
 	var radgrad = ctx.createRadialGradient(x,y,r-r/4,x,y,r);
   	radgrad.addColorStop(0, color0);
@@ -187,6 +188,7 @@ function updateBackground() {
 		
 		if(bgIsAnimating == true) return;
 
+		// need currTime represented as 24 hour so we calculate again.
 		currTime = d.getHours()+':'+(d.getMinutes() < 10 ? ('0'+d.getMinutes()) : d.getMinutes());
 		var sunriseInt = parseInt(SUNRISE.replace(':',''));
 		var sunsetInt = parseInt(SUNSET.replace(':',''));
@@ -203,7 +205,7 @@ function updateBackground() {
 // retrieve the weater object for the given location
 function getWeather() {
 	$.getJSON('http://www.crossproduct.org/serviceProxies/weather.php?callback=?',{LAT:LAT,LONG:LONG},function(data){
-    	console.log(data);
+    	
     	weather = data;
     	var sunriseDate = new Date(weather.data.sunriseDateTime);
     	var sunsetDate = new Date(weather.data.sunsetDateTime);
@@ -220,8 +222,6 @@ function getWeather() {
     	$('#humidityUnits_text').html(weather.data.humidityUnits);
 
 		revealInfomatics();
-
-    	console.log(SUNRISE+'am '+SUNSET+'pm');
 	});
 }
 // TODO: Implement buffered canvas for offscreen drawing

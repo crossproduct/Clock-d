@@ -4,14 +4,26 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title>QUnit | Clock'd Unit Tests</title>
  
-    <link rel="stylesheet" href="../css/qunit.css" />
-    <script src="../js/qunit.js"></script>
+    <link rel="stylesheet" href="../css/qunit-1.10.0.css" />
+    <script src="../js/qunit-1.10.0.js"></script>
+    <script type="text/javascript" src="../js/jquery.min.js"></script>
     <script src="../js/functions.js"></script>
  
     <script>
-    test("clockd basics", function() {
-        var now = "2008/01/28 22:25:00";
-        equal( drawCircle(now, "2008/01/28 22:24:30"), "just now" );
+    var tSUNRISE = "00:00";
+    var tSUNSET = "00:00";
+
+    test("Testing application setup:", function() {
+        SUNRISE = tSUNRISE;
+        SUNSET = tSUNSET;
+        notEqual( init(), null, "init() called and render loop started with non null id" );
+    });
+
+    test("Testing weather service:", function() {
+        ok( weather != null, "Weather service is up and responding returning non null weather object" );
+        getWeather();
+        notStrictEqual(tSUNRISE, SUNRISE, "SUNRISE information retrieved successfully from returned data");
+        notStrictEqual(tSUNSET, SUNSET, "SUNSET information retrieved successfully from returned data");
     });
     </script>
 </head>
