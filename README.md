@@ -1,7 +1,7 @@
 Clock-d
 =======
 
-A minimal but beautiful, soothing rhythmic clock with daily weather updates. 
+A minimal but beautiful, soothing rhythmic clock with hourly weather updates. 
 
 * Rhythmic pulsing on the second for a soothing zen like trance.
 * Dynamic daytime / night time transition with sunrise and sunset color transitions
