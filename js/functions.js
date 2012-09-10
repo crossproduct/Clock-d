@@ -19,9 +19,15 @@ window.onresize = function(event) {
 	$('#clock_canvas')[0].width = window.innerWidth;
 	$('#clock_canvas')[0].height = window.innerHeight;
 	//document.getElementById('canvas_container').requestFullScreen();
+
+	console.log(''+window.innerWidth+' '+window.innerHeight);
 }
 
 function init() {
+	// set default data
+	$('#sunrise_text').html(SUNRISE);
+    $('#sunset_text').html(SUNSET);
+
 	// set handlers
 	setHandlers();
 
@@ -146,12 +152,21 @@ function updateBackground() {
 		
 		if(bgIsAnimating == false) {
 			bgIsAnimating = true;
-			$('body').animate({'backgroundColor':'#FEFED4'}, (1000*60*3), function() {bgIsAnimating = false});
+			$('body').animate({'backgroundColor':'#010D65'}, (1000*60)); // dark blue #010D65
+			$('body').animate({'backgroundColor':'#931A6D'}, (1000*60)); // purple #931A6D
+			$('body').animate({'backgroundColor':'#FD5A5C'}, (1000*60)); // red #FD5A5C
+			$('body').animate({'backgroundColor':'#F49F10'}, (1000*60)); // orange #F49F10
+			$('body').animate({'backgroundColor':'#FEFED4'}, (1000*60), function() {bgIsAnimating = false});
 		}
 	} else if(currTime == SUNSET) {
 		if(bgIsAnimating == false) {
 			bgIsAnimating = true;
-			$('body').animate({'backgroundColor':'#121212'}, (1000*60*3), function() {bgIsAnimating = false});
+			$('body').animate({'backgroundColor':'#F49F10'}, (1000*60)); // orange #F49F10
+			$('body').animate({'backgroundColor':'#FD5A5C'}, (1000*60)); // red #FD5A5C
+			$('body').animate({'backgroundColor':'#931A6D'}, (1000*60)); // purple #931A6D
+			$('body').animate({'backgroundColor':'#010D65'}, (1000*60)); // dark blue #010D65
+			$('body').animate({'backgroundColor':'#121212'}, (1000*60), function() {bgIsAnimating = false}); // black
+			// #F49F10 orange
 		}
 	}else {
 		
@@ -173,12 +188,13 @@ function updateBackground() {
 function getWeather() {
 	var url = 'http://i.wxbug.net/REST/Direct/GetObs.ashx?la='+LAT+'&lo='+LONG+'&&ic=1&api_key=jwp2wjpfnuku7u64csy5x827';
 	$.getJSON('http://www.crossproduct.org/serviceProxies/weather.php?callback=?',{LAT:LAT,LONG:LONG},function(data){
+    	console.log(data);
     	weather = data;
     	var sunriseDate = new Date(weather.data.sunriseDateTime);
     	var sunsetDate = new Date(weather.data.sunsetDateTime);
 
     	SUNRISE = sunriseDate.getUTCHours()+':'+sunriseDate.getUTCMinutes();
-    	SUNSET = (sunsetDate.getUTCHours()-12)+':'+sunsetDate.getUTCMinutes()
+    	SUNSET = (sunsetDate.getUTCHours()-12)+':'+sunsetDate.getUTCMinutes();
 
     	$('#sunrise_text').html(SUNRISE);
     	$('#sunset_text').html(SUNSET);
