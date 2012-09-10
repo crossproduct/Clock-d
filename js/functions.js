@@ -12,8 +12,8 @@ var weather;
 var MAX_SECOND_RADIUS = 100;
 var MAX_MINUTE_RADIUS = 10;
 var MAX_HOUR_RADIUS = 50;
-var SUNRISE = "6:23";
-var SUNSET = "8:23";
+var SUNRISE = "6:23";	// default NYC
+var SUNSET = "8:23";	// default NYC
 var isStaleWeather = true;
 var LAT = "40.71417";	// default NYC
 var LONG = "-74.00639";	// default NYC
@@ -44,11 +44,7 @@ function init() {
 
 	// attempt gps
 	navigator.geolocation.getCurrentPosition(GetLocation);
-	function GetLocation(location) {
-	    LAT = location.coords.latitude;
-	    LONG = location.coords.longitude;
-	    console.log('('+LAT+','+LONG+')');
-	}
+	
 
 	// calculate our sunrise and sunset objects
 	getWeather();
@@ -98,6 +94,13 @@ function revealInfomatics() {
 
 
 // THA UNICORN MEAT //
+function GetLocation(location) {
+    LAT = location.coords.latitude;
+    LONG = location.coords.longitude;
+    console.log('('+LAT+','+LONG+')');
+}
+
+// draw a circle given the params
 function drawCircle(x,y,r,color,fill,stroke) {
 
 	ctx.fillStyle = color;
@@ -113,7 +116,7 @@ function drawCircle(x,y,r,color,fill,stroke) {
 	}
 }
 
-// draws a blurred style circle
+// draws a blurred style circle given the params
 function drawBlurCircle(x,y,r,color0,color1,fill,stroke) {
 	var radgrad = ctx.createRadialGradient(x,y,r-r/4,x,y,r);
   	radgrad.addColorStop(0, color0);
@@ -187,6 +190,7 @@ function updateBackground() {
 		
 		if(bgIsAnimating == true) return;
 
+		// need currTime represented as 24 hour so we calculate again.
 		currTime = d.getHours()+':'+(d.getMinutes() < 10 ? ('0'+d.getMinutes()) : d.getMinutes());
 		var sunriseInt = parseInt(SUNRISE.replace(':',''));
 		var sunsetInt = parseInt(SUNSET.replace(':',''));
@@ -203,7 +207,7 @@ function updateBackground() {
 // retrieve the weater object for the given location
 function getWeather() {
 	$.getJSON('http://www.crossproduct.org/serviceProxies/weather.php?callback=?',{LAT:LAT,LONG:LONG},function(data){
-    	console.log(data);
+    	
     	weather = data;
     	var sunriseDate = new Date(weather.data.sunriseDateTime);
     	var sunsetDate = new Date(weather.data.sunsetDateTime);
@@ -218,10 +222,9 @@ function getWeather() {
     	$('#temperatureLow_text').html(weather.data.temperatureLow+'&deg;');
     	$('#humidity_text').html(weather.data.humidity);
     	$('#humidityUnits_text').html(weather.data.humidityUnits);
+    	$('#temperature_label').html('<b>'+weather.data.desc+'</b>');
 
 		revealInfomatics();
-
-    	console.log(SUNRISE+'am '+SUNSET+'pm');
 	});
 }
 // TODO: Implement buffered canvas for offscreen drawing
