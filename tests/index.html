@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>QUnit | Clock'd Unit Tests</title>
+ 
+    <link rel="stylesheet" href="../css/qunit-1.10.0.css" />
+    <script src="../js/qunit-1.10.0.js"></script>
+    <script type="text/javascript" src="../js/jquery.min.js"></script>
+    <script src="../js/functions.js"></script>
+ 
+    <script>
+    var tSUNRISE = "00:00";
+    var tSUNSET = "00:00";
+
+    test("Testing application setup:", function() {
+        SUNRISE = tSUNRISE;
+        SUNSET = tSUNSET;
+        notEqual( init(), null, "init() called and render loop started with non null id" );
+    });
+
+    test("Testing weather service:", function() {
+        ok( weather != null, "Weather service is up and responding returning non null weather object" );
+        getWeather();
+        setTimeout(ajaxTest, 2000);
+    });
+
+    function ajaxTest() {
+        test("Testing weather service returned data:", function() {
+            notStrictEqual(tSUNRISE, SUNRISE, "SUNRISE information retrieved successfully from returned data within 2s");
+            notStrictEqual(tSUNSET, SUNSET, "SUNSET information retrieved successfully from returned data within 2s");
+        });
+    }
+    </script>
+</head>
+<body>
+    <div id="qunit"></div>
+    <div id="canvas_container" align="center"><canvas id="clock_canvas"/></div>
+</body>
+</html>
