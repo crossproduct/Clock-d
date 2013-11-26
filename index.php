@@ -4,7 +4,7 @@
 
 <html>
 <head>
-<title>Clock'd | A Control Group Experience</title>
+<title>Clock'd</title>
 	<meta name="viewport" content="width=device-width" />
 	<meta name="mobile-web-app-capable" content="yes" />
 	<link rel="shortcut icon" sizes="196x196" href="clockd_128.png" />
