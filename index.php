@@ -5,6 +5,9 @@
 <html>
 <head>
 <title>Clock'd | A Control Group Experience</title>
+	<meta name="viewport" content="width=device-width" />
+	<meta name="mobile-web-app-capable" content="yes" />
+	<link rel="shortcut icon" sizes="196x196" href="clockd_128.png" />
 	<link rel="stylesheet" href="css/style.css" />
 	<script type="text/javascript" src="js/jquery.min.js"></script>
     <script type="text/javascript" src="js/jquery.easing.1.3.js"></script>
