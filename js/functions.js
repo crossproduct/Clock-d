@@ -30,9 +30,10 @@ window.onresize = function(event) {
 
 	console.log(''+window.innerWidth+' '+window.innerHeight);
 
-	MAX_SECOND_RADIUS = window.innerWidth * (100/WIDTH_NORMAL);
-	MAX_MINUTE_RADIUS = window.innerWidth * (10/WIDTH_NORMAL);
-	MAX_HOUR_RADIUS = window.innerWidth * (50/WIDTH_NORMAL);
+	var scale = (window.innerWidth < window.innerHeight ? window.innerWidth : window.innerHeight);
+	MAX_SECOND_RADIUS = scale * (100/WIDTH_NORMAL);
+	MAX_MINUTE_RADIUS = scale * (10/WIDTH_NORMAL);
+	MAX_HOUR_RADIUS = scale * (50/WIDTH_NORMAL);
 }
 
 // application initialization
@@ -59,9 +60,10 @@ function init() {
 	$('#clock_canvas')[0].width = window.innerWidth;
 	$('#clock_canvas')[0].height = window.innerHeight;
 
-	MAX_SECOND_RADIUS = window.innerWidth * (100/WIDTH_NORMAL);
-	MAX_MINUTE_RADIUS = window.innerWidth * (10/WIDTH_NORMAL);
-	MAX_HOUR_RADIUS = window.innerWidth * (50/WIDTH_NORMAL);
+	var scale = (window.innerWidth < window.innerHeight ? window.innerWidth : window.innerHeight);
+	MAX_SECOND_RADIUS = scale * (100/WIDTH_NORMAL);
+	MAX_MINUTE_RADIUS = scale * (10/WIDTH_NORMAL);
+	MAX_HOUR_RADIUS = scale * (50/WIDTH_NORMAL);
 	
 	return setInterval(draw, 10); // approximately 60 fps
 }
@@ -149,7 +151,7 @@ function drawSeconds() {
 function drawMinutes() {
 	var min = d.getMinutes();
 	for(var i=1; i<=min; i++) {
-		drawCircle(window.innerWidth/2+Math.sin(i*Math.PI/30)*(2*MAX_SECOND_RADIUS+3*MAX_MINUTE_RADIUS), window.innerHeight/2-Math.cos(i*Math.PI/30)*(2*MAX_SECOND_RADIUS+3*MAX_MINUTE_RADIUS),(4*(1000-d.getMilliseconds())/1000)+MAX_MINUTE_RADIUS,"rgba(23,193,190,0.8)", true, false); //#17C1BE
+		drawCircle(window.innerWidth/2+Math.sin(i*Math.PI/30)*(2*MAX_SECOND_RADIUS+10*MAX_MINUTE_RADIUS), window.innerHeight/2-Math.cos(i*Math.PI/30)*(2*MAX_SECOND_RADIUS+10*MAX_MINUTE_RADIUS),(4*(1000-d.getMilliseconds())/1000)+MAX_MINUTE_RADIUS,"rgba(23,193,190,0.8)", true, false); //#17C1BE
 		//drawBlurCircle(window.innerWidth/2+Math.sin(i*Math.PI/30)*(2*MAX_SECOND_RADIUS+3*MAX_MINUTE_RADIUS), window.innerHeight/2-Math.cos(i*Math.PI/30)*(2*MAX_SECOND_RADIUS+3*MAX_MINUTE_RADIUS),(4*(1000-d.getMilliseconds())/1000)+MAX_MINUTE_RADIUS,"rgba(23,193,190,1)","rgba(23,193,190,0)", true, false); //#17C1BE
 	}
 }
@@ -159,7 +161,7 @@ function drawHours() {
 	var hours = d.getHours()%12;	// 12-hr clock
 	for(var i=1; i<=hours; i++) {
 		var alpha = 1.2 - (hours - i)/12;
-		drawCircle(window.innerWidth/2+Math.sin(i*Math.PI/6)*(2*MAX_SECOND_RADIUS+3*MAX_MINUTE_RADIUS+2*MAX_HOUR_RADIUS), window.innerHeight/2-Math.cos(i*Math.PI/6)*(2*MAX_SECOND_RADIUS+3*MAX_MINUTE_RADIUS+2*MAX_HOUR_RADIUS),(10*(1000-d.getMilliseconds())/1000)+MAX_HOUR_RADIUS,"rgba(230,219,116,"+alpha+")", true, false); // #E6DB74
+		drawCircle(window.innerWidth/2+Math.sin(i*Math.PI/6)*(2*MAX_SECOND_RADIUS+10*MAX_MINUTE_RADIUS+2*MAX_HOUR_RADIUS), window.innerHeight/2-Math.cos(i*Math.PI/6)*(2*MAX_SECOND_RADIUS+10*MAX_MINUTE_RADIUS+2*MAX_HOUR_RADIUS),(10*(1000-d.getMilliseconds())/1000)+MAX_HOUR_RADIUS,"rgba(230,219,116,"+alpha+")", true, false); // #E6DB74
 		//drawBlurCircle(window.innerWidth/2+Math.sin(i*Math.PI/6)*(2*MAX_SECOND_RADIUS+3*MAX_MINUTE_RADIUS+2*MAX_HOUR_RADIUS), window.innerHeight/2-Math.cos(i*Math.PI/6)*(2*MAX_SECOND_RADIUS+3*MAX_MINUTE_RADIUS+2*MAX_HOUR_RADIUS),(10*(1000-d.getMilliseconds())/1000)+MAX_HOUR_RADIUS,"rgba(230,219,116,1)","rgba(230,219,116,0)", true, false); // #E6DB74
 	}
 
