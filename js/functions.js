@@ -9,6 +9,7 @@
 var ctx;
 var d;
 var weather;
+var WIDTH_NORMAL = 1080;
 var MAX_SECOND_RADIUS = 100;
 var MAX_MINUTE_RADIUS = 10;
 var MAX_HOUR_RADIUS = 50;
@@ -28,6 +29,10 @@ window.onresize = function(event) {
 	//document.getElementById('canvas_container').requestFullScreen();
 
 	console.log(''+window.innerWidth+' '+window.innerHeight);
+
+	MAX_SECOND_RADIUS = window.innerWidth * (100/WIDTH_NORMAL);
+	MAX_MINUTE_RADIUS = window.innerWidth * (10/WIDTH_NORMAL);
+	MAX_HOUR_RADIUS = window.innerWidth * (50/WIDTH_NORMAL);
 }
 
 // application initialization
@@ -53,6 +58,11 @@ function init() {
 	ctx = $('#clock_canvas')[0].getContext("2d");
 	$('#clock_canvas')[0].width = window.innerWidth;
 	$('#clock_canvas')[0].height = window.innerHeight;
+
+	MAX_SECOND_RADIUS = window.innerWidth * (100/WIDTH_NORMAL);
+	MAX_MINUTE_RADIUS = window.innerWidth * (10/WIDTH_NORMAL);
+	MAX_HOUR_RADIUS = window.innerWidth * (50/WIDTH_NORMAL);
+	
 	return setInterval(draw, 10); // approximately 60 fps
 }
 
